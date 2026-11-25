@@ -30,7 +30,7 @@ export const IMAGES = {
 
 export const FEATURED_MONTHLY = {
   monthLabel: "Featured Project of the Month",
-  badge: "Monthly Retainer Showcase Slot",
+  badge: "Signature Residence",
   title: "The Linear Twilight Villa & Private Interiors",
   subtitle: "A complete multi-room residential direction spanning cantilevered travertine architecture, acoustic walnut lounges, spa bathrooms, and twilight terrace living.",
   coverImage: IMAGES.terrace,
@@ -38,7 +38,7 @@ export const FEATURED_MONTHLY = {
   tourRoom: "terrace",
   slug: "the-linear-twilight-villa",
   highlights: [
-    "Updated monthly with Dream Designers' newest completed residences",
+    "Cantilevered honed travertine wings & vertical oak sun-louvres",
     "Paired with high-resolution interactive room walkthroughs",
     "Direct WhatsApp & structured brief routing for high-intent buyers",
   ],

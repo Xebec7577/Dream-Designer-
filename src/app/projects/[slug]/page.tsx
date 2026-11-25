@@ -72,7 +72,7 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
 
       <section className="border-t border-hairline bg-canvas py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slateMuted">Related Studies</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slateMuted">More Projects</p>
           <div className="mt-6 grid gap-6 md:grid-cols-3">
             {related.map((r) => (
               <Link key={r.slug} href={`/projects/${r.slug}`} className="overflow-hidden rounded-2xl bg-pure shadow-sm transition-all hover:shadow-lg">

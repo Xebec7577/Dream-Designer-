@@ -6,8 +6,8 @@ import { buildWhatsAppUrl } from "@/lib/site-config";
 import { OpenTourButton } from "@/components/OpenTourButton";
 
 export const metadata: Metadata = {
-  title: "Client Portal Demo — Sample Residence",
-  description: "Sample private client project portal demonstrating how Dream Designers shares 3D renders, material boards, and stage milestones.",
+  title: "Private Client Portal — Sector 23 Residence",
+  description: "Private client project portal by Dream Designers for reviewing 3D renders, material boards, and stage milestones.",
 };
 
 const MILESTONES = [
@@ -37,20 +37,19 @@ export default function ClientPortalDemoPage() {
       <div className="rounded-3xl bg-ink p-6 sm:p-10 text-white">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/80">
-            <Lock className="h-3 w-3" /> Sample Private Client Portal &middot; Demo Mode
+            <Lock className="h-3 w-3" /> Private Client Portal
           </span>
           <a href={feedbackWa} target="_blank" rel="noopener noreferrer" className="glass-white inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold">
-            Message Designer <ArrowUpRight className="h-3.5 w-3.5" />
+            Message Studio <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
         </div>
         <h1 className="mt-5 font-display text-3xl sm:text-5xl font-bold tracking-tight">
-          Sample Residence — Sector 23
+          Sector 23 Residence
         </h1>
         <p className="mt-2 max-w-2xl text-xs sm:text-sm text-white/65">
-          This demo illustrates how every Dream Designers client tracks live milestones, approves material boards, and explores their latest 3D room renders from their phone.
+          Dedicated client workspace for tracking live architectural milestones, approving material palettes, and walking through 3D rooms from any device.
         </p>
 
-        {/* Stage Progress Strip */}
         <div className="mt-8 grid gap-3 sm:grid-cols-5">
           {MILESTONES.map((m) => (
             <div key={m.num} className={`rounded-2xl border p-4 ${m.done ? "border-white/25 bg-white/10" : "border-white/10 bg-white/[0.03]"}`}>
@@ -65,7 +64,6 @@ export default function ClientPortalDemoPage() {
         </div>
       </div>
 
-      {/* Latest 3D Room Deliverables */}
       <div className="mt-12">
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
@@ -91,7 +89,6 @@ export default function ClientPortalDemoPage() {
         </div>
       </div>
 
-      {/* Approved Material Board */}
       <div className="mt-12 grid gap-8 rounded-3xl bg-canvas p-6 sm:p-10 lg:grid-cols-12 lg:items-center">
         <div className="aspect-square overflow-hidden rounded-2xl lg:col-span-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -108,7 +105,7 @@ export default function ClientPortalDemoPage() {
               Approve Stage 04 on WhatsApp
             </a>
             <Link href="/start-project" className="glass-white rounded-full px-6 py-3 text-xs font-semibold">
-              Request Your Own Project
+              Start Your Project
             </Link>
           </div>
         </div>

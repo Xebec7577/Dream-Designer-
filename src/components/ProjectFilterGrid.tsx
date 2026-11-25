@@ -25,7 +25,7 @@ export function ProjectFilterGrid() {
             <div className="relative aspect-[4/3] overflow-hidden bg-canvas">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={s.coverImage} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-              <span className="glass-white absolute left-3.5 top-3.5 rounded-full px-3 py-1 text-[10px] font-semibold">Concept Study</span>
+              <span className="glass-white absolute left-3.5 top-3.5 rounded-full px-3 py-1 text-[10px] font-semibold">{s.typology}</span>
             </div>
             <div className="p-5 sm:p-6">
               <span className="text-[11px] font-medium text-slateMuted">{s.categories.join(" · ")}</span>

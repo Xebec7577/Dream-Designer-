@@ -233,9 +233,6 @@ export function HomeExperience() {
             </div>
 
             <p className="mt-3 text-xs font-medium text-slateMuted">{m.meta}</p>
-            <p className="mt-0.5 text-[11px] text-slateMuted/75">
-              Dream Designers, Ambala &middot; Concept Visual Direction
-            </p>
 
             {/* Primary Dual Conversion CTA (Above-the-fold Fogg B=MAP trigger) */}
             <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-3xl sm:rounded-full bg-canvas px-4 py-2.5">
@@ -328,7 +325,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      {/* 3. FEATURED PROJECT OF THE MONTH (MONTHLY RETAINER SHOWCASE) */}
+      {/* 3. FEATURED PROJECT OF THE MONTH */}
       <section className="border-y border-hairline bg-canvas py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <div className="grid gap-8 rounded-3xl bg-pure p-5 sm:p-10 shadow-sm lg:grid-cols-12 lg:items-center">
@@ -493,7 +490,7 @@ export function HomeExperience() {
                 <ArrowRight className="h-4 w-4" />
               </button>
               <Link href="/projects" className="glass-white rounded-full px-5 py-2.5 text-xs font-semibold">
-                All 10 Studies
+                View All Projects
               </Link>
             </div>
           </div>
