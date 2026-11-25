@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Compass, Play } from "lucide-react";
-import { HOME_MODELS, IMAGES, REELS_DATA, STUDIES } from "@/data/catalog";
+import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Compass, Lock, Play } from "lucide-react";
+import { FEATURED_MONTHLY, HOME_MODELS, IMAGES, INTERIOR_SHOWCASE, REELS_DATA, STUDIES } from "@/data/catalog";
 import { SITE_CONFIG, buildWhatsAppUrl } from "@/lib/site-config";
 import { useSpatialTour } from "./SpatialTourContext";
 
@@ -26,19 +26,19 @@ export function HomeExperience() {
 
   return (
     <>
-      {/* 5-SECOND SAMARA MINIMAL WHITE HERO */}
-      <section className="bg-pure pb-16 sm:pb-24 pt-10 sm:pt-16">
+      {/* 1. MOBILE-FIRST SAMARA MINIMAL WHITE HERO */}
+      <section className="bg-pure pb-14 sm:pb-24 pt-8 sm:pt-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 text-center">
           <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] text-ink">
             Five spaces. <span className="font-normal text-slateMuted">Endless possibility.</span>
           </h1>
 
-          <div className="mt-8 sm:mt-12">
-            <p className="font-display text-xl sm:text-2xl font-semibold text-ink">{m.name}</p>
+          <div className="mt-7 sm:mt-12">
+            <p className="font-display text-lg sm:text-2xl font-semibold text-ink">{m.name}</p>
             <p className="mt-1 text-xs sm:text-sm text-slateMuted">{m.subtitle}</p>
 
-            <div className="relative mx-auto mt-6 sm:mt-8 max-w-4xl">
-              <div className="aspect-[4/3] sm:aspect-[16/9] overflow-hidden rounded-2xl sm:rounded-[26px] bg-canvas shadow-[0_24px_70px_rgba(0,0,0,0.08)]">
+            <div className="relative mx-auto mt-5 sm:mt-8 max-w-4xl">
+              <div className="aspect-[4/5] sm:aspect-[16/9] overflow-hidden rounded-3xl bg-canvas shadow-[0_24px_70px_rgba(0,0,0,0.08)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={m.img} alt={m.name} className="h-full w-full object-cover transition-all duration-500" style={{ filter: swatch.filter }} />
               </div>
@@ -50,7 +50,7 @@ export function HomeExperience() {
               </button>
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-2.5">
+            <div className="mt-5 flex items-center justify-center gap-2.5">
               {SWATCHES.map((sw) => (
                 <button key={sw.id} type="button" title={sw.label} aria-label={sw.label} onClick={() => setSwatch(sw)} className={`h-8 w-8 rounded-full border-2 p-0.5 transition-all ${swatch.id === sw.id ? "scale-110 border-ink" : "border-transparent"}`}>
                   <span className="block h-full w-full rounded-full shadow-inner" style={{ backgroundColor: sw.hex }} />
@@ -58,10 +58,10 @@ export function HomeExperience() {
               ))}
             </div>
 
-            <p className="mt-4 text-xs font-medium text-slateMuted">{m.meta}</p>
+            <p className="mt-3.5 text-xs font-medium text-slateMuted">{m.meta}</p>
             <p className="mt-1 text-[11px] text-slateMuted/75">Dream Designers, Ambala &middot; Concept Visual Direction</p>
 
-            <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-3xl sm:rounded-full bg-canvas px-4 py-2.5">
+            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-3xl sm:rounded-full bg-canvas px-4 py-2.5">
               <Link href="/showroom" className="glass-black rounded-full px-5 py-2.5 text-xs font-semibold">
                 Open 3D Showroom &rarr;
               </Link>
@@ -73,13 +73,82 @@ export function HomeExperience() {
         </div>
       </section>
 
-      {/* 19-SECOND SAMARA "PEEK INSIDE." HOOK */}
+      {/* 2. FEATURED PROJECT OF THE MONTH (MONTHLY RETAINER SHOWCASE) */}
+      <section className="border-y border-hairline bg-canvas py-14 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <div className="grid gap-8 rounded-3xl bg-pure p-5 sm:p-10 shadow-sm lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-6">
+              <span className="inline-block rounded-full bg-canvas px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slateMuted">
+                {FEATURED_MONTHLY.monthLabel}
+              </span>
+              <h2 className="mt-3 font-display text-2xl sm:text-4xl font-bold tracking-tight text-ink">
+                {FEATURED_MONTHLY.title}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slateMuted">{FEATURED_MONTHLY.subtitle}</p>
+              <ul className="mt-5 space-y-2 text-xs sm:text-sm text-ink/80">
+                {FEATURED_MONTHLY.highlights.map((h) => <li key={h}>&mdash; {h}</li>)}
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <button type="button" onClick={() => openRoom(FEATURED_MONTHLY.tourRoom)} className="glass-black inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold">
+                  <Compass className="h-3.5 w-3.5" /> Tour Featured Space
+                </button>
+                <Link href={`/projects/${FEATURED_MONTHLY.slug}`} className="glass-white rounded-full px-5 py-2.5 text-xs font-semibold">
+                  Read Case Study
+                </Link>
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:col-span-6">
+              <div className="aspect-[4/3] sm:aspect-[4/5] overflow-hidden rounded-2xl bg-canvas">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={FEATURED_MONTHLY.coverImage} alt="Twilight terrace pavilion" loading="lazy" className="h-full w-full object-cover" />
+              </div>
+              <div className="aspect-[4/3] sm:aspect-[4/5] overflow-hidden rounded-2xl bg-canvas">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={FEATURED_MONTHLY.secondaryImage} alt="Acoustic walnut media lounge" loading="lazy" className="h-full w-full object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. RICH 8-ROOM INTERIOR GALLERY (TAP ANY ROOM TO OPEN 3D VIEW) */}
+      <section className="bg-pure py-14 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slateMuted">Inside Every Room</p>
+              <h2 className="mt-2 font-display text-3xl sm:text-5xl font-bold tracking-tight text-ink">
+                Interiors. <span className="font-normal text-slateMuted">Room by room.</span>
+              </h2>
+            </div>
+            <button type="button" onClick={openPicker} className="glass-black self-start sm:self-auto rounded-full px-5 py-2.5 text-xs font-semibold">
+              Open All 8 Spaces in 3D
+            </button>
+          </div>
+          <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-4">
+            {INTERIOR_SHOWCASE.map((room) => (
+              <button key={room.title} type="button" onClick={() => openRoom(room.tourRoom)} className="group overflow-hidden rounded-2xl sm:rounded-3xl border border-hairline bg-canvas text-left transition-all hover:-translate-y-1 hover:shadow-xl">
+                <div className="aspect-[4/5] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={room.img} alt={room.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                </div>
+                <div className="p-3.5 sm:p-4">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-slateMuted">{room.tag}</span>
+                  <p className="mt-1 font-display text-sm sm:text-base font-bold text-ink">{room.title}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. 19-SECOND SAMARA "PEEK INSIDE." HOOK */}
       <section className="bg-canvas py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="group relative aspect-[4/3] sm:aspect-[16/9] overflow-hidden rounded-3xl sm:rounded-[32px] bg-black shadow-2xl">
+          <div className="group relative aspect-[4/5] sm:aspect-[16/9] overflow-hidden rounded-3xl bg-black shadow-2xl">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={IMAGES.panoLiving} alt="Peek inside Dream Designers luxury residence" className="h-full w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.02]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent" />
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
               <h2 className="font-display text-4xl sm:text-7xl font-bold tracking-[-0.03em] text-white">Peek inside.</h2>
               <button type="button" onClick={openPicker} className="glass-white mt-5 sm:mt-7 inline-flex items-center gap-2 rounded-full px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-sm font-semibold">
@@ -90,7 +159,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      {/* 11-SECOND SQUARESPACE BLACK EDITORIAL PORTFOLIO */}
+      {/* 5. 11-SECOND SQUARESPACE BLACK PORTFOLIO */}
       <section className="overflow-hidden bg-black py-16 sm:py-24 text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
@@ -99,18 +168,18 @@ export function HomeExperience() {
               <h2 className="mt-2 font-display text-4xl sm:text-7xl font-bold uppercase tracking-[-0.03em]">PORTFOLIO</h2>
             </div>
             <div className="flex items-center gap-2">
-              <button type="button" aria-label="Scroll left" onClick={() => stripRef.current?.scrollBy({ left: -380, behavior: "smooth" })} className="glass-frosted-dark flex h-10 w-10 items-center justify-center rounded-full"><ArrowLeft className="h-4 w-4" /></button>
-              <button type="button" aria-label="Scroll right" onClick={() => stripRef.current?.scrollBy({ left: 380, behavior: "smooth" })} className="glass-frosted-dark flex h-10 w-10 items-center justify-center rounded-full"><ArrowRight className="h-4 w-4" /></button>
-              <Link href="/projects" className="glass-white rounded-full px-5 py-2.5 text-xs font-semibold">View All</Link>
+              <button type="button" aria-label="Scroll left" onClick={() => stripRef.current?.scrollBy({ left: -340, behavior: "smooth" })} className="glass-frosted-dark flex h-10 w-10 items-center justify-center rounded-full"><ArrowLeft className="h-4 w-4" /></button>
+              <button type="button" aria-label="Scroll right" onClick={() => stripRef.current?.scrollBy({ left: 340, behavior: "smooth" })} className="glass-frosted-dark flex h-10 w-10 items-center justify-center rounded-full"><ArrowRight className="h-4 w-4" /></button>
+              <Link href="/projects" className="glass-white rounded-full px-5 py-2.5 text-xs font-semibold">All 10 Studies</Link>
             </div>
           </div>
         </div>
 
         <div ref={stripRef} className="no-scrollbar mt-10 flex gap-5 sm:gap-7 overflow-x-auto px-4 sm:px-6 pb-4 lg:px-10 snap-x snap-mandatory">
           {STUDIES.map((s) => (
-            <Link key={s.slug} href={`/projects/${s.slug}`} className="group w-[82vw] max-w-[440px] shrink-0 snap-start">
+            <Link key={s.slug} href={`/projects/${s.slug}`} className="group w-[82vw] max-w-[420px] shrink-0 snap-start">
               <div className="overflow-hidden rounded-2xl border border-white/15 bg-white/5">
-                <div className="aspect-[16/10] overflow-hidden">
+                <div className="aspect-[4/3] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={s.coverImage} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
@@ -125,8 +194,32 @@ export function HomeExperience() {
         </div>
       </section>
 
-      {/* REELS & SOCIAL */}
-      <section className="border-b border-hairline bg-pure py-16 sm:py-24">
+      {/* 6. PRIVATE CLIENT PORTAL PREVIEW (THE MONTHLY RETAINER CLOSER!) */}
+      <section className="border-b border-hairline bg-pure py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid gap-8 rounded-3xl bg-ink p-6 sm:p-12 text-white lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-7">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/75">
+                <Lock className="h-3 w-3" /> Private Client Experience
+              </span>
+              <h2 className="mt-4 font-display text-2xl sm:text-4xl font-bold tracking-tight">
+                Give every client their own private project portal.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-white/65">
+                Instead of scattering 3D renders across WhatsApp groups, each Dream Designers client receives a private link showing their stage progress, approved material board, and interactive 3D rooms.
+              </p>
+            </div>
+            <div className="lg:col-span-5 lg:text-right">
+              <Link href="/client/demo-residence" className="glass-white inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-xs font-semibold">
+                Preview Live Client Portal <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. REELS & SOCIAL */}
+      <section className="border-b border-hairline bg-pure py-14 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
@@ -143,7 +236,7 @@ export function HomeExperience() {
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-4">
             {REELS_DATA.map((r) => (
               <Link key={r.id} href="/reels" className="group relative aspect-[9/16] overflow-hidden rounded-2xl sm:rounded-3xl bg-black text-left shadow-lg">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -161,7 +254,7 @@ export function HomeExperience() {
         </div>
       </section>
 
-      {/* FINAL CTA */}
+      {/* 8. FINAL CTA */}
       <section className="bg-canvas py-16 sm:py-24">
         <div className="mx-auto max-w-4xl px-5 text-center">
           <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-ink">Ready to design your space?</h2>

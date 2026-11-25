@@ -121,8 +121,19 @@ export function ShowroomConfigurator() {
           )}
         </div>
 
+        {/* Swipeable Mobile Room Selector for Floor Plan */}
+        {isFloor && (
+          <div className="sm:hidden mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {spots.map((sp) => (
+              <button key={sp.id} type="button" onClick={() => setSpotId(sp.id)} className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold ${spotId === sp.id ? "glass-black" : "glass-white"}`}>
+                {sp.title}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {TOUR_ROOMS.slice(0, 4).map((r) => (
+          {TOUR_ROOMS.map((r) => (
             <button key={r.id} type="button" onClick={() => openRoom(r.id)} className={`group overflow-hidden rounded-2xl border text-left transition-transform hover:-translate-y-1 ${isFloor ? "border-black/10 bg-white" : "border-white/15 bg-white/5"}`}>
               <div className="aspect-[16/10] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

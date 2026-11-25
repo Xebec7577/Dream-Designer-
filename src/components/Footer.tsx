@@ -20,6 +20,7 @@ export function Footer() {
               <li><Link href="/projects" className="hover:text-white">Portfolio</Link></li>
               <li><Link href="/services" className="hover:text-white">Services</Link></li>
               <li><Link href="/reels" className="hover:text-white">Reels &amp; Instagram</Link></li>
+              <li><Link href="/client/demo-residence" className="hover:text-white">Client Portal Demo</Link></li>
               <li><Link href="/studio" className="hover:text-white">The Studio</Link></li>
               <li><Link href="/start-project" className="hover:text-white">Start Your Project</Link></li>
             </ul>
