@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  ArrowLeft,
   ArrowRight,
   Compass,
   Grid,
@@ -28,7 +29,7 @@ export function SpatialTourWindow({
   onClose: () => void;
 }) {
   const router = useRouter();
-  const [stage, setStage] = useState<"picker" | "live">(initialRoomId ? "live" : "picker");
+  const [stage, setStage] = useState<"picker" | "live">("live");
   const [roomId, setRoomId] = useState<string>(initialRoomId || "living");
   const [mood, setMood] = useState<Mood>("daylight");
   const [transitioning, setTransitioning] = useState(false);
@@ -98,7 +99,6 @@ export function SpatialTourWindow({
     setHeading(180);
   }, []);
 
-  // Lock body scroll & Escape key
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
@@ -140,7 +140,6 @@ export function SpatialTourWindow({
       raf = requestAnimationFrame(tick);
       const c = camRef.current;
 
-      // Subtle AAA cinematic auto-glide when idle
       if (autoGlide && !c.dragging && !gyroActive && !c.userInteracted) {
         c.glidePhase += 0.0055;
         const { maxX } = getPanBounds(c.targetScale);
@@ -150,7 +149,6 @@ export function SpatialTourWindow({
         c.targetRy = Math.sin(c.glidePhase) * 2.2;
       }
 
-      // Apply inertial flick momentum after finger/mouse release
       if (!c.dragging && (Math.abs(c.vx) > 0.12 || Math.abs(c.vy) > 0.12)) {
         c.targetTx += c.vx;
         c.targetTy += c.vy;
@@ -163,7 +161,6 @@ export function SpatialTourWindow({
 
       clampTarget();
 
-      // Exponential critically-damped lerp
       c.scale += (c.targetScale - c.scale) * 0.12;
       c.tx += (c.targetTx - c.tx) * 0.14;
       c.ty += (c.targetTy - c.ty) * 0.14;
@@ -176,7 +173,6 @@ export function SpatialTourWindow({
         )}px, 0) scale(${c.scale.toFixed(4)}) rotateX(${c.rx.toFixed(2)}deg) rotateY(${c.ry.toFixed(2)}deg)`;
       }
 
-      // Update compass heading smoothly (~10fps for zero React re-render overhead)
       frameCount++;
       if (frameCount % 6 === 0) {
         const { maxX } = getPanBounds(c.scale);
@@ -244,8 +240,8 @@ export function SpatialTourWindow({
   useEffect(() => {
     if (!gyroActive || stage !== "live") return;
     const onOrient = (e: DeviceOrientationEvent) => {
-      const gamma = e.gamma ?? 0; // left-right tilt (-90 to 90)
-      const beta = (e.beta ?? 45) - 45; // front-back tilt centered around 45 deg
+      const gamma = e.gamma ?? 0;
+      const beta = (e.beta ?? 45) - 45;
       const { maxX, maxY } = getPanBounds(camRef.current.targetScale);
       const normX = Math.max(-1, Math.min(1, gamma / 32));
       const normY = Math.max(-1, Math.min(1, beta / 35));
@@ -277,7 +273,6 @@ export function SpatialTourWindow({
     }
   };
 
-  // Cinematic Dolly-Zoom Room Transition (no jarring black loading screen!)
   const enterRoom = (id: string) => {
     if (id === roomId && stage === "live") return;
     setTransitioning(true);
@@ -287,7 +282,7 @@ export function SpatialTourWindow({
       resetCamera();
       setHintVisible(true);
       setTimeout(() => setTransitioning(false), 120);
-    }, 220);
+    }, 200);
   };
 
   const adjustZoom = (delta: number) => {
@@ -334,49 +329,79 @@ export function SpatialTourWindow({
       aria-modal="true"
       aria-label="Dream Designers AAA 3D Spatial Tour"
     >
+      {/* CINEMATIC FULL-BLEED 8-SPACE GALLERY (No cringe list, zero clipping!) */}
       {stage === "picker" && (
-        <div className="relative flex h-full w-full flex-col items-center overflow-y-auto bg-[#070709] px-4 py-14 sm:justify-center sm:px-6">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="glass-frosted-dark fixed right-4 top-4 sm:right-6 sm:top-6 z-20 flex h-10 w-10 items-center justify-center rounded-full"
-          >
-            <X className="h-5 w-5" />
-          </button>
+        <div className="flex h-full w-full flex-col overflow-y-auto bg-[#070709]">
+          <div className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-[#070709]/85 px-4 py-3.5 backdrop-blur-xl sm:px-8">
+            <button
+              type="button"
+              onClick={() => setStage("live")}
+              className="glass-frosted-dark inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-semibold"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span>Back to Tour</span>
+            </button>
 
-          <div className="w-full max-w-2xl text-center">
-            <span className="glass-frosted-dark inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/80">
-              <Compass className="h-3 w-3" /> Spatial Walkthrough Engine
-            </span>
-            <h2 className="mt-3 font-display text-2xl sm:text-4xl font-bold tracking-tight">
-              Step inside any space.
-            </h2>
-            <p className="mt-1.5 text-xs sm:text-sm text-white/55">
-              Wide-field panoramic pan, inertial glide, pinch-zoom &amp; real-time lighting across 8 spaces.
-            </p>
+            <div className="text-center">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50">
+                Dream Designers &middot; 3D Spatial Collection
+              </p>
+              <h2 className="font-display text-sm sm:text-lg font-bold tracking-tight text-white">
+                Select any space to step inside
+              </h2>
+            </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-2.5 text-left sm:grid-cols-2">
-              {TOUR_ROOMS.map((r) => (
-                <button
-                  key={r.id}
-                  type="button"
-                  onClick={() => enterRoom(r.id)}
-                  className="group flex w-full items-center gap-3.5 rounded-2xl border border-white/15 bg-white/[0.06] p-2.5 text-left transition-all hover:border-white/40 hover:bg-white/[0.13] active:scale-[0.98]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={r.img}
-                    alt={r.name}
-                    className="h-14 w-20 shrink-0 rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-display text-sm font-semibold text-white truncate">{r.name}</p>
-                    <p className="mt-0.5 text-[11px] text-white/55 truncate">{r.meta}</p>
-                  </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-white/40 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
-                </button>
-              ))}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="glass-frosted-dark flex h-9 w-9 items-center justify-center rounded-full"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-8 sm:py-8">
+            <div className="grid grid-cols-2 gap-3.5 sm:gap-5 lg:grid-cols-4">
+              {TOUR_ROOMS.map((r, i) => {
+                const isCurrent = r.id === roomId;
+                return (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => enterRoom(r.id)}
+                    className={`group relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden rounded-2xl sm:rounded-3xl border text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] ${
+                      isCurrent ? "border-white ring-2 ring-white/40" : "border-white/15 hover:border-white/45"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={r.img}
+                      alt={r.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+                    <div className="absolute left-3 right-3 top-3 flex items-center justify-between">
+                      <span className="glass-frosted-dark rounded-full px-2.5 py-0.5 font-mono text-[10px] font-semibold">
+                        0{i + 1}
+                      </span>
+                      {isCurrent && (
+                        <span className="glass-white rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+                          Active
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
+                      <p className="font-display text-xs sm:text-base font-bold text-white leading-tight">
+                        {r.name}
+                      </p>
+                      <p className="mt-1 hidden sm:block text-[11px] text-white/65 truncate">{r.meta}</p>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -384,7 +409,7 @@ export function SpatialTourWindow({
 
       {stage === "live" && (
         <div className="relative flex-1 overflow-hidden bg-black">
-          {/* TOP AAA HUD: All Spaces | Room Title + Live Compass | Controls + Close */}
+          {/* TOP AAA HUD */}
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-30 flex items-center justify-between gap-2 px-3 pt-3 sm:px-6 sm:pt-5">
             <div className="pointer-events-auto flex items-center gap-1.5">
               <button
@@ -411,9 +436,8 @@ export function SpatialTourWindow({
               </button>
             </div>
 
-            {/* Center Room & Live Compass Bearing Pill */}
             <div className="pointer-events-auto glass-frosted-dark flex items-center gap-2 rounded-full px-3.5 py-1.5 sm:px-5 sm:py-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+              <Compass className="h-3.5 w-3.5 text-white/80" />
               <span className="max-w-[130px] sm:max-w-none truncate font-display text-[11px] sm:text-xs font-semibold">
                 {room.name}
               </span>
@@ -445,7 +469,7 @@ export function SpatialTourWindow({
             </div>
           </div>
 
-          {/* FULL-BLEED WIDE-FIELD PANORAMIC VIEWPORT (Zero Cropping Lock on Mobile!) */}
+          {/* FULL-BLEED WIDE-FIELD PANORAMIC VIEWPORT */}
           <div
             ref={viewportRef}
             className="relative flex h-full w-full items-center justify-center overflow-hidden bg-[#060608] select-none touch-none cursor-grab active:cursor-grabbing"
@@ -480,7 +504,6 @@ export function SpatialTourWindow({
               camRef.current.lastY = e.clientY;
             }}
           >
-            {/* Overscanned Panoramic Stage: Always keeps full 16:9 width so mobile can pan smoothly edge-to-edge */}
             <div
               ref={stageRef}
               className="relative h-full min-h-[100dvh] aspect-[16/9] min-w-[122vw] shrink-0 will-change-transform"
@@ -499,7 +522,6 @@ export function SpatialTourWindow({
                 style={{ filter: moodFilter }}
               />
 
-              {/* Volumetric Atmospheric Light-Shaft & Filmic Vignette Layer */}
               <div
                 className="pointer-events-none absolute inset-0 transition-all duration-700"
                 style={{ background: volumetricOverlay }}
@@ -507,12 +529,10 @@ export function SpatialTourWindow({
               <div
                 className="pointer-events-none absolute inset-0"
                 style={{
-                  background:
-                    "radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,0.42) 100%)",
+                  background: "radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,0.42) 100%)",
                 }}
               />
 
-              {/* Interactive Doorway Step Portals (Anchored to actual architectural thresholds) */}
               <div className="absolute inset-0 z-20">
                 {room.portals.map((pt) => (
                   <button
@@ -530,7 +550,6 @@ export function SpatialTourWindow({
               </div>
             </div>
 
-            {/* Subtle Gesture Cue */}
             {hintVisible && (
               <div className="pointer-events-none absolute left-1/2 top-16 sm:top-20 z-20 -translate-x-1/2 rounded-full bg-black/55 px-4 py-1.5 text-[10px] font-medium tracking-wider text-white/90 backdrop-blur-md">
                 Swipe left/right to explore &middot; Pinch or double-tap to zoom
@@ -538,9 +557,8 @@ export function SpatialTourWindow({
             )}
           </div>
 
-          {/* BOTTOM THUMB-ZONE AAA CONTROL DOCK (Room Filmstrip + Lighting + Zoom + Book) */}
+          {/* BOTTOM THUMB-ZONE AAA CONTROL DOCK */}
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-30 flex flex-col items-center gap-2 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-3 pb-safe pt-8">
-            {/* 1-Tap Horizontal Room Thumbnail Filmstrip */}
             <div className="pointer-events-auto no-scrollbar flex w-full max-w-3xl items-center gap-2 overflow-x-auto pb-0.5 sm:justify-center">
               {TOUR_ROOMS.map((r) => {
                 const active = r.id === roomId;
@@ -565,9 +583,7 @@ export function SpatialTourWindow({
               })}
             </div>
 
-            {/* Primary Camera & Lighting Pill */}
             <div className="pointer-events-auto glass-frosted-dark flex max-w-full items-center gap-1 sm:gap-2 rounded-full p-1.5">
-              {/* Zoom Cluster */}
               <div className="flex items-center">
                 <button
                   type="button"
@@ -596,7 +612,6 @@ export function SpatialTourWindow({
 
               <span className="h-4 w-px bg-white/20" />
 
-              {/* Real-Time Atmosphere Lighting Toggle */}
               <div className="flex items-center gap-0.5">
                 <button
                   type="button"
@@ -632,7 +647,6 @@ export function SpatialTourWindow({
 
               <span className="h-4 w-px bg-white/20" />
 
-              {/* Direct Conversion Prompt */}
               <button
                 type="button"
                 onClick={() => {

@@ -21,10 +21,11 @@ export function useSpatialTour() {
 
 export function SpatialTourProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [roomId, setRoomId] = useState<string | null>(null);
+  const [roomId, setRoomId] = useState<string>("living");
 
+  // Launch straight into the live full-screen 3D Living Salon — never a boring list screen
   const openPicker = () => {
-    setRoomId(null);
+    setRoomId("living");
     setOpen(true);
   };
   const openRoom = (id: string) => {
